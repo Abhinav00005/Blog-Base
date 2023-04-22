@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<%- include('../partials/head.ejs') %>
+
+    <body>
+        <%- include('../partials/nav.ejs') %>
+
+            <div class="details content">
+                <h2>
+                    <%= blog.title%>
+                </h2>
+                <div class="content">
+                    <%= blog.body%>
+                </div>
+                <a class="delete" data-doc="<%= blog._id%>">
+                    <img src="/trashcan.svg" alt="delete icon">
+                </a>
+                <!-- data is just a custom data attribute in HTML
+                used to store some required data/details -->
+            </div>
+
+            <%- include('../partials/footer.ejs') %>
+
+                <script>
+                    const trashcan = document.querySelector('a.delete');
+
+                    trashcan.addEventListener('click', (e) => {
+                        const endpoint = `/blogs/${trashcan.dataset.doc}`;
+
+                        fetch(endpoint, {
+                            method: 'DELETE'
+                        })
+                            // when the response is sent back to here from app.js (server) in the form of JSON
+                            .then((response) => response.json())
+                            // JSON reponse can't be used directly so we use it in the form/name of response
+                            .then((data) => {
+                                console.log(data);
+                                window.location.href = data.redirect;
+                            })
+                            .catch((err) => { console.log(err) });
+                    })
+                </script>
+    </body>
+
+</html>
