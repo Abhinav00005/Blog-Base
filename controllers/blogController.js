@@ -32,22 +32,32 @@ const blog_details = (req, res) => {
 // blog_create_get
 const blog_create_get = (req, res) => {
 	// res.send("<h1>About Page</h1>");
-	res.render("blogs/create", { title: "Create a new blog" });
+	res.render("blogs/create", { title: "" });
 };
 
 // blog_create_post
 const blog_create_post = (req, res) => {
 	const blog = new Blog(req.body);
-	blog
-		.save()
-		.then((result) => {
-			// alert("New Blog Added");
-			res.redirect("/blogs");
-		})
-		.catch((err) => {
-			console.log(err);
-		});
-	// console.log(req.body);
+	const title = blog.title;
+	console.log(title);
+	// if()
+	// else{
+	Blog.find({ title: title }).then((result) => {
+		console.log(result);
+		if (result.length > 0) {
+			res.status(400).render("blogs/create", { title: "Blog already exists" });
+		} else {
+			blog
+				.save()
+				.then((result) => {
+					// alert("New Blog Added");
+					res.redirect("/blogs");
+				})
+				.catch((err) => {
+					console.log(err);
+				});
+		}
+	});
 };
 
 // blog_delete
