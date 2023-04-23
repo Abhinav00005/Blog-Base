@@ -143,3 +143,9 @@ textarea {
 	font-size: 1.2em;
 	cursor: pointer;
 }
+
+.exists {
+	color: red;
+	text-align: center;
+	padding: 20px;
+}
